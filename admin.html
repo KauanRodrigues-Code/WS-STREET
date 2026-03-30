@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Street WS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', Arial, sans-serif; }
+        body { background: #0a0a0a; color: white; padding: 30px; }
+        h1 { color: red; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .container { display: grid; grid-template-columns: 350px 1fr; gap: 40px; }
+        
+        /* Formulário Lateral */
+        .form-box { 
+            background: #111; 
+            padding: 25px; 
+            border-radius: 10px; 
+            position: sticky; 
+            top: 20px; 
+            height: fit-content;
+            border: 1px solid #222;
+        }
+        
+        .form-box h2 { margin-bottom: 15px; font-size: 18px; color: #fff; }
+        .form-box input, .form-box select { 
+            width: 100%; padding: 12px; margin-bottom: 12px; border: none; 
+            border-radius: 5px; background: #222; color: white; outline: none;
+        }
+        .form-box input:focus { border: 1px solid red; }
+        
+        /* Estilo dos botões de Upload */
+        .upload-box { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .upload-btn { 
+            background: red; padding: 10px 15px; border-radius: 5px; cursor: pointer; 
+            font-size: 13px; font-weight: bold; transition: 0.3s; text-align: center;
+        }
+        .upload-btn:hover { background: #cc0000; }
+        .upload-text { font-size: 12px; color: #aaa; }
+        
+        .btn-principal { 
+            width: 100%; padding: 14px; background: red; border: none; 
+            color: white; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px;
+        }
+        .btn-cancelar { 
+            width: 100%; padding: 10px; background: #444; border: none;
+            color: white; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold;
+        }
+
+        /* Seção Banner e Destaques */
+        .banner-section, .destaques-section { border-bottom: 1px solid #333; margin-bottom: 20px; padding-bottom: 15px; }
+
+        /* Lista de Produtos */
+        .header-produtos { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 25px; background: #111; padding: 20px; border-radius: 10px; border: 1px solid #222;
+        }
+        .filtro-admin select { background: #222; color: white; padding: 8px 15px; border-radius: 5px; border: 1px solid red; }
+
+        .produtos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .produto { background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; position: relative; }
+        .produto img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
+        
+        .badge-destaque {
+            position: absolute; top: 10px; right: 10px; background: gold; color: black;
+            font-size: 10px; padding: 3px 7px; border-radius: 5px; font-weight: bold;
+        }
+
+        .botoes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .btn-edit { background: #2196F3; border: none; color: white; padding: 8px; border-radius: 4px; cursor: pointer; }
+        .btn-rem { background: #ff2b2b; border: none; color: white; padding: 8px; border-radius: 4px; cursor: pointer; }
+
+        @media(max-width:900px) { .container { grid-template-columns: 1fr; } .form-box { position: static; } }
+    </style>
+</head>
+
+<body>
+
+    <h1>Painel Street WS</h1>
+
+    <div class="container">
+        <div class="form-box">
+            
+            <div class="banner-section">
+                <h2 style="color: #2196F3;">Capa do Site</h2>
+                <div class="upload-box">
+                    <label class="upload-btn" style="background: #2196F3; width: 100%;">
+                        Trocar Foto de Fundo
+                        <input type="file" id="fotoBanner" accept="image/*" hidden onchange="atualizarBanner(this)">
+                    </label>
+                </div>
+            </div>
+
+            <div class="destaques-section">
+                <h2 style="color: gold;">Produtos Destaques</h2>
+                <label style="font-size: 11px; color: #aaa;">Selecione 2 Produtos:</label>
+                <select id="selDestaque1" onchange="salvarMeusDestaques()"><option value="">Destaque 1</option></select>
+                <select id="selDestaque2" onchange="salvarMeusDestaques()"><option value="">Destaque 2</option></select>
+            </div>
+
+            <h2 id="tituloForm">Novo Produto</h2>
+            <input id="nome" placeholder="Nome do produto">
+            <input id="preco" type="number" placeholder="Preço">
+            
+            <label style="font-size: 11px; color: #aaa;">Categoria:</label>
+            <select id="categoria">
+                <option value="camisas">Camisas</option>
+                <option value="bermudas">Bermudas</option>
+                <option value="calcas">Calças</option>
+                <option value="acessorios">Acessórios</option>
+                <option value="tenis">Tênis</option>
+                <option value="moletons">Moletons</option>
+            </select>
+
+            <input id="estoque" type="number" placeholder="Estoque">
+
+            <div class="upload-box" id="uploadArea">
+                <label class="upload-btn">
+                    Fotos do Produto (Máx 10)
+                    <input type="file" id="imagens" multiple accept="image/*" hidden>
+                </label>
+                <span class="upload-text" id="uploadText">0 fotos</span>
+            </div>
+
+            <button class="btn-principal" id="btnSalvar" onclick="addProduto()">Salvar Produto</button>
+            <button id="btnCancelar" class="btn-cancelar" style="display:none" onclick="cancelarEdicao()">Cancelar Edição</button>
+        </div>
+
+        <div>
+            <div class="header-produtos">
+                <h2>Seus Produtos</h2>
+                <div class="filtro-admin">
+                    <span>Ver:</span>
+                    <select id="filtroVista" onchange="render()">
+                        <option value="todos">Todos</option>
+                        <option value="camisas">Camisas</option>
+                        <option value="bermudas">Bermudas</option>
+                        <option value="calcas">Calças</option>
+                        <option value="acessorios">Acessórios</option>
+                        <option value="tenis">Tênis</option>
+                        <option value="moletons">Moletons</option>
+                    </select>
+                </div>
+            </div>
+            <div class="produtos" id="lista"></div>
+        </div>
+    </div>
+
+    <script>
+        let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+        let editandoIndex = null;
+
+        const inputFotos = document.getElementById("imagens");
+        const uploadText = document.getElementById("uploadText");
+
+        // BANNER PRINCIPAL
+        function atualizarBanner(input) {
+            if (input.files && input.files[0]) {
+                compressImage(input.files[0], (imagem) => {
+                    localStorage.setItem("bannerPrincipal", imagem);
+                    alert("Imagem de fundo atualizada!");
+                });
+            }
+        }
+
+        // COMPRESSÃO
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    const maxWidth = 800;
+                    const scale = maxWidth / img.width;
+                    canvas.width = maxWidth;
+                    canvas.height = img.height * scale;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    callback(canvas.toDataURL("image/jpeg", 0.7));
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // DESTAQUES
+        function salvarMeusDestaques() {
+            const d1 = document.getElementById("selDestaque1").value;
+            const d2 = document.getElementById("selDestaque2").value;
+            localStorage.setItem("produtosDestaques", JSON.stringify([d1, d2]));
+            render();
+        }
+
+        function popularSelectDestaques() {
+            const s1 = document.getElementById("selDestaque1");
+            const s2 = document.getElementById("selDestaque2");
+            const salvos = JSON.parse(localStorage.getItem("produtosDestaques")) || [];
+
+            [s1, s2].forEach((select, i) => {
+                select.innerHTML = `<option value="">Selecionar Destaque ${i+1}</option>`;
+                produtos.forEach(p => {
+                    const selected = salvos[i] === p.nome ? "selected" : "";
+                    select.innerHTML += `<option value="${p.nome}" ${selected}>${p.nome}</option>`;
+                });
+            });
+        }
+
+        // LISTENER FOTOS PRODUTO
+        inputFotos.addEventListener("change", () => {
+            if (inputFotos.files.length > 10) {
+                alert("Máximo 10 fotos!");
+                inputFotos.value = "";
+                return;
+            }
+            uploadText.innerText = inputFotos.files.length + " foto(s)";
+        });
+
+        function addProduto() {
+            const nome = document.getElementById("nome").value;
+            const preco = document.getElementById("preco").value;
+            const categoria = document.getElementById("categoria").value;
+            const estoque = document.getElementById("estoque").value;
+
+            if (!nome || !preco || !estoque) { alert("Preencha tudo!"); return; }
+
+            if (editandoIndex !== null) {
+                produtos[editandoIndex] = {...produtos[editandoIndex], nome, preco, categoria, estoque};
+                localStorage.setItem("produtos", JSON.stringify(produtos));
+                render();
+                cancelarEdicao();
+                alert("Produto atualizado!");
+                return;
+            }
+
+            const files = inputFotos.files;
+            if (files.length === 0) { alert("Selecione fotos!"); return; }
+
+            let processadas = 0;
+            Array.from(files).forEach((file, i) => {
+                compressImage(file, (imagem) => {
+                    produtos.push({
+                        nome: files.length > 1 ? `${nome} ${i + 1}` : nome,
+                        preco, categoria, estoque, imagem
+                    });
+                    processadas++;
+                    if (processadas === files.length) {
+                        localStorage.setItem("produtos", JSON.stringify(produtos));
+                        limpar();
+                        render();
+                        alert("Produtos adicionados!");
+                    }
+                });
+            });
+        }
+
+        function prepararEdicao(index) {
+            editandoIndex = index;
+            const p = produtos[index];
+            document.getElementById("nome").value = p.nome;
+            document.getElementById("preco").value = p.preco;
+            document.getElementById("categoria").value = p.categoria;
+            document.getElementById("estoque").value = p.estoque;
+
+            document.getElementById("tituloForm").innerText = "Editando...";
+            document.getElementById("btnSalvar").innerText = "Salvar Alterações";
+            document.getElementById("btnCancelar").style.display = "block";
+            document.getElementById("uploadArea").style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelarEdicao() {
+            limpar();
+            editandoIndex = null;
+            document.getElementById("tituloForm").innerText = "Novo Produto";
+            document.getElementById("btnSalvar").innerText = "Salvar Produto";
+            document.getElementById("btnCancelar").style.display = "none";
+            document.getElementById("uploadArea").style.display = "flex";
+        }
+
+        function limpar() {
+            document.getElementById("nome").value = "";
+            document.getElementById("preco").value = "";
+            document.getElementById("estoque").value = "";
+            inputFotos.value = "";
+            uploadText.innerText = "0 fotos";
+        }
+
+        function remover(index) {
+            if (confirm("Remover produto?")) { 
+                produtos.splice(index, 1); 
+                localStorage.setItem("produtos", JSON.stringify(produtos)); 
+                render(); 
+            }
+        }
+
+        function render() {
+            const lista = document.getElementById("lista");
+            const filtro = document.getElementById("filtroVista").value;
+            const destaques = JSON.parse(localStorage.getItem("produtosDestaques")) || [];
+            lista.innerHTML = "";
+            
+            produtos.forEach((p, index) => {
+                if (filtro !== "todos" && p.categoria !== filtro) return;
+                const corEst = p.estoque > 0 ? "#00ff00" : "red";
+                const isDestaque = destaques.includes(p.nome);
+                
+                lista.innerHTML += `
+                <div class="produto">
+                    ${isDestaque ? '<span class="badge-destaque">★ DESTAQUE</span>' : ''}
+                    <img src="${p.imagem}">
+                    <h3>${p.nome}</h3>
+                    <p>R$ ${p.preco}</p>
+                    <small style="color:red; text-transform:uppercase">${p.categoria}</small><br>
+                    <span class="status-estoque" style="color:${corEst}">Estoque: ${p.estoque}</span>
+                    <div class="botoes-grid">
+                        <button class="btn-edit" onclick="prepararEdicao(${index})">Editar</button>
+                        <button class="btn-rem" onclick="remover(${index})">Remover</button>
+                    </div>
+                </div>`;
+            });
+            popularSelectDestaques();
+        }
+        render();
+    </script>
+</body>
+</html>

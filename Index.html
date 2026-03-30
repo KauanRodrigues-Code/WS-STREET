@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street WS | Streetwear Premium</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="topbar">
+        🖤 Street WS — A melhor loja de streetwear
+    </div>
+
+    <header class="header">
+        <div class="logo">Street WS</div>
+
+        <nav class="menu">
+            <a onclick="filtrar('todos')" style="cursor:pointer">Home</a>
+            <a class="btn-categorias-menu" onclick="toggleMenuCategorias()">Categoria</a>   
+        </nav>
+
+        <div class="header-actions">
+            <input type="text" placeholder="Procurar">
+            <div class="carrinho-icon" onclick="abrirCarrinho()">
+                🛒 <span id="contador">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div id="menu-categorias-overlay" class="categorias-overlay">
+        <div class="categorias-content">
+            <button class="fechar-menu" onclick="toggleMenuCategorias()">✕</button>
+            <h2 class="titulo-menu">NOSSAS CATEGORIAS</h2>
+            <div class="categorias-grid-botoes">
+                <button onclick="filtrarEDirecionar('todos')">Todos</button>
+                <button onclick="filtrarEDirecionar('camisas')">Camisas</button>
+                <button onclick="filtrarEDirecionar('bermudas')">Bermudas</button>
+                <button onclick="filtrarEDirecionar('calcas')">Calças</button>
+                <button onclick="filtrarEDirecionar('acessorios')">Acessórios</button>
+                <button onclick="filtrarEDirecionar('tenis')">Tênis</button>
+                <button onclick="filtrarEDirecionar('moletons')">Moletons</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero" id="bannerHero"></section>
+        <div class="hero-content">
+            <h1>STREET WS</h1>
+            <h2>Streetwear Premium</h2>
+            <p>Estilo urbano para quem vive a cultura street.</p>
+            <button onclick="document.getElementById('destaques-section').scrollIntoView({behavior: 'smooth'})">Explorar Loja</button>
+        </div>
+    </section>
+
+    <section class="destaques" id="destaques-section">
+        <h2 style="text-align: center; margin-bottom: 30px; font-weight: 900; color: red;">PRODUTOS DESTAQUES</h2>
+        <div class="destaques-container" id="produtos-destaques"></div>
+    </section>
+
+    <section class="produtos" id="catalogo-completo">
+        <h2 style="text-align: center; margin-bottom: 30px;">Catálogo Completo</h2>
+        <div class="produtos-grid" id="produtos"></div>
+    </section>
+
+    <div id="toast">
+        Produto adicionado ao carrinho 🛒
+    </div>
+
+    <div class="carrinho-lateral" id="carrinho">
+        <div class="carrinho-topo" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #333;">
+            <h2>Seu Carrinho</h2>
+            <button class="fechar-carrinho" onclick="abrirCarrinho()" style="background:none; border:none; color:white; font-size: 24px; cursor:pointer;">✕</button>
+        </div>
+
+        <div id="lista-carrinho"></div>
+
+        <div id="checkout-area">
+            <button class="btn-finalizar" onclick="iniciarCheckout()">
+                Finalizar Compra
+            </button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Street WS</h3>
+                <p>Streetwear criado para quem vive a cultura urbana.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Links</h4>
+                <a href="#" onclick="filtrar('todos')">Home</a>
+                <a href="#produtos">Produtos</a>
+            </div>
+            <div class="footer-col">
+                <h4>Suporte</h4>
+                <a href="#">Contato</a>
+                <a href="#">Trocas</a>
+            </div>
+            <div class="footer-col">
+                <h4>Redes</h4>
+                <a href="#">Instagram</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Street WS — Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>

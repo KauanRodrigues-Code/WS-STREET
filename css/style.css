@@ -1,0 +1,419 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #0a0a0a;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   HEADER & NAVIGATION
+   ========================================= */
+.topbar {
+    background: black;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 10%;
+    background: #1a1a1a;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: red;
+    text-decoration: none;
+}
+
+.menu {
+    display: flex;
+    align-items: center; /* Garante alinhamento com o novo botão */
+    gap: 30px;
+}
+
+.menu a {
+    color: white;
+    cursor: pointer;
+    position: relative;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+/* BOTÃO CATEGORIAS PERSONALIZADO */
+.btn-categorias-menu {
+    background: transparent;
+    color: white;
+    border: 2px solid red;
+    padding: 8px 20px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: 0.3s ease;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-categorias-menu:hover {
+    background: red;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ANIMAÇÃO MENU HOME */
+.menu a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: red;
+    left: 0;
+    bottom: -5px;
+    transition: 0.3s;
+}
+
+.menu a:hover::after {
+    width: 100%;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-actions input {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background: #222;
+    color: white;
+}
+
+.carrinho-icon {
+    cursor: pointer;
+    position: relative;
+    font-size: 22px;
+}
+
+#contador {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 11px;
+}
+
+/* =========================================
+   SISTEMA DE CATEGORIAS (OVERLAY ANIMADO)
+   ========================================= */
+.categorias-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
+    z-index: 9999;
+    display: none; /* Controlado pelo JS */
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.categorias-content {
+    text-align: center;
+    width: 90%;
+    max-width: 800px;
+}
+
+.titulo-menu {
+    font-size: clamp(30px, 5vw, 50px);
+    font-weight: 900;
+    color: white;
+    margin-bottom: 50px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+}
+
+.categorias-grid-botoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.categorias-grid-botoes button {
+    background: #111;
+    color: white;
+    border: 1px solid #333;
+    padding: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.categorias-grid-botoes button:hover {
+    background: red;
+    border-color: red;
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
+}
+
+.fechar-menu {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 45px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.fechar-menu:hover {
+    color: red;
+    transform: rotate(90deg);
+}
+
+/* =========================================
+   HERO SECTION (BANNER)
+   ========================================= */
+.hero {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background-image: url('../background.png'); 
+    background-size: cover;
+    background-position: center 20%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
+    max-width: 900px;
+}
+
+.hero h1 { 
+    color: red; 
+    font-size: 18px; 
+    letter-spacing: 4px; 
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.hero h2 { 
+    font-size: clamp(32px, 9vw, 80px);
+    margin: 10px 0; 
+    font-weight: 900; 
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.hero p { 
+    color: white; 
+    margin-bottom: 30px; 
+    font-weight: 400;
+    font-size: clamp(14px, 4vw, 18px);
+}
+
+.hero-content button {
+    background: red;
+    color: white;
+    border: none;
+    padding: 16px 45px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   PRODUTOS & DESTAQUES
+   ========================================= */
+.destaques { padding: 80px 10%; background: #050505; }
+
+.destaques-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.produtos { padding: 80px 10%; text-align: center; }
+.produtos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.produto-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.produto-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(255, 0, 0, 0.2);
+}
+
+.produto-img img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.preco { color: red; font-weight: bold; font-size: 18px; margin: 10px 0; }
+
+.btn-add {
+    background: red;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: 0.2s;
+}
+
+/* =========================================
+   CARRINHO & INTERFACE
+   ========================================= */
+#toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #111;
+    padding: 14px 20px;
+    border-left: 4px solid red;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.3s;
+    z-index: 2000;
+}
+
+#toast.show { opacity: 1; transform: translateY(0); }
+
+.carrinho-lateral {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 350px;
+    height: 100vh;
+    background: #111;
+    padding: 20px;
+    transition: 0.4s;
+    z-index: 1500;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+}
+
+.carrinho-lateral.ativo { right: 0; }
+
+#lista-carrinho {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.btn-categorias-menu {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+/* animação igual ao botão Home */
+.btn-categorias-menu::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: red;
+    left: 0;
+    bottom: -5px;
+    transition: 0.3s;
+}
+
+.btn-categorias-menu:hover::after {
+    width: 100%;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+.footer { background: #111; padding: 60px 10%; margin-top: 80px; border-top: 1px solid #222; }
+.footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+.footer-col h3 { color: red; margin-bottom: 10px; }
+.footer-bottom { text-align: center; margin-top: 40px; color: #777; font-size: 13px; }
+
+/* =========================================
+   ANIMAÇÕES E RESPONSIVIDADE
+   ========================================= */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@media(max-width:768px) {
+    .menu { gap: 10px; }
+    .btn-categorias-menu { padding: 6px 12px; font-size: 12px; }
+    .hero { height: 70vh; background-attachment: scroll; }
+    .hero h2 { font-size: 36px; }
+    .carrinho-lateral { width: 100%; }
+}
