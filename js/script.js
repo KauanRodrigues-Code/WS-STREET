@@ -6,7 +6,7 @@ const carrinhoBox = document.getElementById("carrinho");
 const toastBox = document.getElementById("toast");
 
 /* =========================
-   NOVAS FUNÇÕES DO MENU (ADICIONADAS)
+   NOVAS FUNÇÕES DO MENU
    ========================= */
 function toggleMenuCategorias() {
     const overlay = document.getElementById("menu-categorias-overlay");
@@ -18,16 +18,14 @@ function toggleMenuCategorias() {
 }
 
 function filtrarEDirecionar(categoria) {
-    filtrar(categoria); // Executa sua função de filtro original
-    toggleMenuCategorias(); // Fecha a aba
-    
-    // Rola suavemente até o catálogo
+    filtrar(categoria);
+    toggleMenuCategorias();
     const section = document.getElementById('catalogo-completo');
     if(section) section.scrollIntoView({behavior: 'smooth'});
 }
 
 /* =========================
-   LÓGICA ORIGINAL PRESERVADA
+   FUNÇÕES DE CARRINHO
    ========================= */
 function salvarCarrinho() {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
@@ -38,6 +36,9 @@ function abrirCarrinho() {
     renderCarrinho();
 }
 
+/* =========================
+   FUNÇÃO BANNER
+   ========================= */
 function carregarBanner() {
     const bannerSalvo = localStorage.getItem("bannerPrincipal");
     const hero = document.getElementById("bannerHero");
@@ -46,6 +47,9 @@ function carregarBanner() {
     }
 }
 
+/* =========================
+   RENDERIZAÇÃO DE DESTAQUES
+   ========================= */
 function renderDestaques() {
     const produtosSalvos = JSON.parse(localStorage.getItem("produtos")) || [];
     const destaquesSalvos = JSON.parse(localStorage.getItem("produtosDestaques")) || []; 
@@ -81,6 +85,9 @@ function renderDestaques() {
     });
 }
 
+/* =========================
+   FUNÇÕES DE ADICIONAR/REMOVER
+   ========================= */
 function addCarrinho(nome, preco, imagem, botao, indexOriginal) {
     const produtosSalvos = JSON.parse(localStorage.getItem("produtos")) || [];
     const p = produtosSalvos[indexOriginal];
@@ -100,7 +107,7 @@ function addCarrinho(nome, preco, imagem, botao, indexOriginal) {
         renderCarrinho();
         carregarProdutos(); 
         renderDestaques(); 
-        mostrarToast(nome + " no carrinho!");
+        mostrarToast(nome + " adicionado ao carrinho!");
     } else {
         mostrarToast("Ops! Este item acabou.");
     }
@@ -133,6 +140,9 @@ function removerCarrinho(index) {
     renderCarrinho();
 }
 
+/* =========================
+   RENDER CARRINHO
+   ========================= */
 function renderCarrinho() {
     if (!listaCarrinho) return;
     listaCarrinho.innerHTML = "";
@@ -161,6 +171,9 @@ function renderCarrinho() {
         </div>`;
 }
 
+/* =========================
+   ANIMAÇÕES
+   ========================= */
 function animarCarrinho() {
     const icon = document.querySelector(".carrinho-icon");
     if (!icon) return;
@@ -207,6 +220,9 @@ function animarProduto(botao) {
     setTimeout(() => clone.remove(), 700);
 }
 
+/* =========================
+   CARREGAR PRODUTOS
+   ========================= */
 function carregarProdutos() {
     const produtos = JSON.parse(localStorage.getItem("produtos")) || [];
     const container = document.getElementById("produtos");
@@ -235,6 +251,9 @@ function carregarProdutos() {
     });
 }
 
+/* =========================
+   FILTRAR PRODUTOS
+   ========================= */
 function filtrar(categoria) {
     const produtosCards = document.querySelectorAll(".produto-card");
     produtosCards.forEach((p) => {
@@ -249,6 +268,9 @@ function filtrar(categoria) {
     });
 }
 
+/* =========================
+   TOAST
+   ========================= */
 function mostrarToast(texto) {
     if (!toastBox) return;
     toastBox.innerText = texto;
@@ -256,29 +278,38 @@ function mostrarToast(texto) {
     setTimeout(() => toastBox.classList.remove("show"), 2000);
 }
 
-function iniciarCheckout() {
+/* =========================
+   CHECKOUT WHATSAPP
+   ========================= */
+function finalizarWhatsApp() {
     if(carrinho.length === 0) {
         mostrarToast("Seu carrinho está vazio!");
         return;
     }
     
-    let mensagem = "Olá! Gostaria de fazer um pedido:\n\n";
+    let mensagem = "🔥 *NOVO PEDIDO - STREET WS* 🔥\n\n";
     let total = 0;
     
     carrinho.forEach(item => {
-        mensagem += `• ${item.nome} - R$ ${item.preco}\n`;
+        mensagem += `🛍️ *${item.nome}* - R$ ${item.preco}\n`;
         total += Number(item.preco);
     });
     
-    mensagem += `\n*Total: R$ ${total.toFixed(2)}*`;
-    
-    const numeroWhats = "5511999999999"; // COLOQUE SEU NÚMERO AQUI
-    const url = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(mensagem)}`;
-    
-    window.open(url, '_blank');
+    mensagem += `\n💳 *TOTAL: R$ ${total.toFixed(2)}*\n\n`;
+    mensagem += "📦 Entrega ou retirada?\n";
+    mensagem += "📍 Informe seu endereço:\n";
+    mensagem += "💰 Forma de pagamento:\n\n";
+    mensagem += "🙏 Obrigado por comprar na *Street WS*!\n";
+    mensagem += "🔥 Streetwear de verdade.";
+
+    let telefone = "5543988230563"; // SEU NÚMERO
+    let url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+    window.open(url, "_blank");
 }
 
-// Inicialização
+/* =========================
+   INICIALIZAÇÃO
+   ========================= */
 carregarBanner();
 carregarProdutos();
 renderDestaques(); 

@@ -47,12 +47,15 @@
         </div>
     </div>
 
-    <section class="hero" id="bannerHero"></section>
+    <!-- HERO -->
+    <section class="hero" id="bannerHero">
         <div class="hero-content">
             <h1>STREET WS</h1>
             <h2>Streetwear Premium</h2>
             <p>Estilo urbano para quem vive a cultura street.</p>
-            <button onclick="document.getElementById('destaques-section').scrollIntoView({behavior: 'smooth'})">Explorar Loja</button>
+            <button onclick="document.getElementById('destaques-section').scrollIntoView({behavior: 'smooth'})">
+                Explorar Loja
+            </button>
         </div>
     </section>
 
@@ -79,10 +82,36 @@
         <div id="lista-carrinho"></div>
 
         <div id="checkout-area">
-            <button class="btn-finalizar" onclick="iniciarCheckout()">
-                Finalizar Compra
+            <button id="btnFinalizarWpp">
+                <span class="wpp-icon">📲</span> Finalizar no WhatsApp
             </button>
         </div>
+
+        <style>
+        #btnFinalizarWpp {
+            background-color: #ff3b30;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #btnFinalizarWpp:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
+        }
+
+        .wpp-icon {
+            font-size: 20px;
+        }
+        </style>
     </div>
 
     <footer class="footer">
@@ -113,6 +142,10 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script>
+        // Garantindo que o botão chame a função
+        document.getElementById("btnFinalizarWpp").addEventListener("click", finalizarWhatsApp);
+    </script>
 
 </body>
 </html>
